@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Gomobile</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+                
+                body {
+                    margin-top: 5px;
+                    margin-left: 50px;
+                    margin-right: 50px;
+                    font-size: 18px;
+                }
+            
+            item {
+                margin-left: 80px;
+                margin-right: 80px;
+            }
+            
+            code {
+                font-size: 15px;
+                color: #33A9FF;
+            }
+            </style>
+    </head>
+    
+    <body>
+        <article>
+        <div>
+            <h3>Experiences when use Gomobile to build framework.</h3>
+            <p class="title">
+            When you build a mobile native application for Android and iOS, you cannot avoid the duplicate code.<br />For example: the network module which use need to write in Java/Kotlin for Android and Objective-C/Swift for iOS.<br />However, you can use Gomobile to write this module and export to a framwork for those platform, when you need update somethings, you also just need to update once and export update framework for both Android and iOS.<br />
+            Have many tutorials instruct you how to build it. So I don't want to do it again. I just want to shared some my experiences when working with GoMobile.
+            
+            <li>Slices array:</li>
+            <p class="item">
+            You cannot export functions with slice array into it to mobile framework. Let support I have a method <code>func getItemsFromKey(keys: []string) ([]string error)</code>. which passing a list of <code>keys</code> with type <code>string</code> and return list <code>values</code> with type <code>string</code>. But the problem is that: you cannot passing Array(Swift code) to this function like that.
+            </p>
+            
+            <li>Interface:</li>
+            
+            </p>
+        </div>
+        </article>
+    </body>
+    
+</html>
