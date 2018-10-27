@@ -34,11 +34,37 @@
             
             <li>Slices array:</li>
             <p class="item">
-            You cannot export functions with slice array into it to mobile framework. Let support I have a method <code>func getItemsFromKey(keys: []string) ([]string error)</code>. which passing a list of <code>keys</code> with type <code>string</code> and return list <code>values</code> with type <code>string</code>. But the problem is that: you cannot passing Array(Swift code) to this function like that.
+            You cannot export functions with slice array into it to mobile framework. Let support I have a method <code>func getItemsFromKey(keys: []string) ([]string error)</code>. which passing a list of keys with type string and return list values with type string. But the problem is that: you cannot passing Array type of mobile to this function like that. So I try to change this method which allow passing json string with a list keys <code>{"data" : [{"key": "a"}, {"key": "b"}]}</code>. And use struct like below to parse it:<br /><br />
+            <code>
+                type Data struct {<br />
+                    Data []*Response `json:"data"`<br />
+                }<br />
+                <br />
+                type Response struct {<br />
+                    Key   string `json:"key"`<br />
+                    Value string `json:"value"`<br />
+                }<br />
+                <br />
+                func parseJSONString(jsonString string) []string {<br />
+                    list := &Data{}<br />
+                    json.Unmarshal([]byte(jsonString), &list)<br />
+                    keys := make([]string, 0)<br />
+                    for _, item := range configs.Data {<br />
+                        keys = append(keys, item.Key)<br />
+                    }<br />
+                    return keys<br />
+                }<br />
+                <br />
+                </code>
+                This can solved my problem.
+            
             </p>
             
-            <li>Interface:</li>
-            
+<!--            <li>Interface:</li>-->
+<!--            <p class="item">-->
+<!--            -->
+<!--            </p>-->
+
             </p>
         </div>
         </article>
