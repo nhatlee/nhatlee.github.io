@@ -32,9 +32,31 @@
             When you build a mobile native application for Android and iOS, you cannot avoid the duplicate code.<br />For example: the network module which use need to write in Java/Kotlin for Android and Objective-C/Swift for iOS.<br />However, you can use Gomobile to write this module and export to a framwork for those platform, when you need update somethings, you also just need to update once and export update framework for both Android and iOS.<br />
             Have many tutorials instruct you how to build it. So I don't want to do it again. I just want to shared some my experiences when working with GoMobile.
             
+            <li>Setup Gomobile</li>
+            <p class="item">
+            <ol type="1">
+                <li>Install Gomobile</li>
+                <p class="item">
+                    After you run <code>$ go get golang.org/x/mobile/cmd/gomobile</code> successful. Then you need run next command <code>$ gomobile init</code><br />
+                    ... oh ooh: <code>command not found: gomobile</code>
+                    <br />
+                    With me it take about an hour to resolve this :(. So long, but finally, I fixed it by run the command: <code>export PATH=$PATH:'/Users/nhatle/go/bin'</code>. That is the path to parent Go directory into my computer. You got the error <code>command not found: gomobile</code> because you are not in the <code>bin</code> directory, which contain gomobile.
+                </P>
+                <li>Problem with mutile Xcode version in application folder</li>
+                <p class="item">
+                With me I have two Xcode versions into the application folder: 9.4.1(name <code>Xcode.app</code>) and 10(name <code>Xcode copy.app</code>).<br />
+                So that I failed to run the command <code>gomobile bind -target ios -o ../../frameworks/CoreLib.framework</code><br />
+                 Why?<br />
+                The problem is my command line tools point to <code>Xcode copy.app</code>. So I think the white space into the name <Code>Xcode copy.app</code> is the problem.
+                I decide to solved the problem with run the command: <code>sudo xcode-select -s /Applications/Xcode.app</code>.<br />After that I can export the framework successful :).
+                </P>
+            </ol>
+            </p>
+            
+            
             <li>Slices array:</li>
             <p class="item">
-            You cannot export functions with slice array into it to mobile framework. Let support I have a method <code>func getItemsFromKey(keys: []string) ([]string error)</code>. which passing a list of keys with type string and return list values with type string. But the problem is that: you cannot passing Array type of mobile to this function like that. So I try to change this method which allow passing json string with a list keys <code>{"data" : [{"key": "a"}, {"key": "b"}]}</code>. And use struct like below to parse it:<br /><br />
+            Let suppose I have a method <code>func getItemsFromKey(keys: []string) ([]string error)</code> which passing a list of keys with type string and return list values with type string too. But the problem is that your method will be skepping when you try to export framework for iOS/Android. So I try to change this method which allow passing json string contain list keys <code>{"data" : [{"key": "a"}, {"key": "b"}]}</code>. And use struct like below to parse it:<br /><br />
             <code>
                 type Data struct {<br />
                     Data []*Response `json:"data"`<br />
@@ -55,16 +77,24 @@
                     return keys<br />
                 }<br />
                 <br />
-                </code>
-                This can solved my problem.
-            
+            </code>
             </p>
             
-<!--            <li>Interface:</li>-->
-<!--            <p class="item">-->
-<!--            -->
-<!--            </p>-->
-
+            <li>Completion callback:</li>
+            <p class="item">
+                It's easy to make callback method in Go, however when you export to <code>*.framework</code> to use in mobile will having a problem that Gomobile still not support export callback function, so your method will be skipping when export to lib file.<br />
+                So I resolved this problem by having an interface to make call back method like <code>delegate</code> pattern.<br />
+                <code>
+                type ResponseHandler interface {<br />
+                ResponseResult(response []byte, err error)<br />
+                }<br />
+                func CallAPI(responseHandler ResponseHandler) {<br />
+                //Do something here to get data<br />
+                responseHandler.ResponseResult(data, err)<br />
+                }<br />
+                </code>
+            </p>
+            Will update more ...
             </p>
         </div>
         </article>
