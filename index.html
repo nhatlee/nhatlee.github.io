@@ -1,106 +1,119 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    p.title {
+      margin-top: 5px;
+      margin-left: 210px;
+      margin-right: 210px;
+      font-size: 26px;
+      text-align: center;
+      color: #797b7c;
+    }
 
-p.title {
-	margin-top: 5px;
-	margin-left: 210px;
-    margin-right: 210px;
-    font-size: 26px;
-    text-align: center;
-    color: #797b7c;
-}
+    h4 {
+      margin-left: 50px;
+    }
 
-h4{
-    margin-left: 50px;
-}
+    body {
+      font-family: "Lato", sans-serif;
+      transition: background-color .5s;
+    }
 
-body {
-    font-family: "Lato", sans-serif;
-    transition: background-color .5s;
-}
+    .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
 
-.sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-}
+    .sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
 
-.sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-}
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
 
-.sidenav a:hover {
-    color: #f1f1f1;
-}
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 30px;
+      margin-left: 30px;
+    }
 
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 30px;
-    margin-left: 30px;
-}
+    #main {
+      transition: margin-left .5s;
+      padding: 16px;
+    }
 
-#main {
-    transition: margin-left .5s;
-    padding: 16px;
-}
-
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
-</style>
+    @media screen and (max-height: 450px) {
+      .sidenav {
+        padding-top: 15px;
+      }
+      .sidenav a {
+        font-size: 18px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
- <ul>
-            <li class="nav-home" role="presentation"><a href="https://nhatlee.github.io.">Home</a></li>
-            <li class="nav-about" role="presentation"><a href="https://nhatlee.github.io./about">About</a></li>
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <ul>
+      <li class="nav-home" role="presentation">
+        <a href="https://nhatlee.github.io.">Home</a>
+      </li>
+      <li class="nav-about" role="presentation">
+        <a href="https://nhatlee.github.io./about">About</a>
+      </li>
     </ul>
-</div>
+  </div>
 
-<div id="main">
-  <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>
-  <h1 align="center">Coding</h1>
-  <p class="title">This is my personal programming blog. I'll post interesting stuff about everything, but mainly Swift, iOS, Objective-C and Go.</p>
-</div>
+  <div id="main">
+    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+    <h1 align="center">Coding</h1>
+    <p class="title">This is my personal programming blog. I'll post interesting stuff about everything, but mainly Swift, iOS, Objective-C
+      and Go.</p>
+  </div>
 
 
 </body>
 
-<h4>I > <a href="https://nhatlee.github.io./gomobile">Experiences when use Gomobile to build framework. Which can share code for iOS and Android app.</a></h4>
+<h4>I >
+  <a href="https://nhatlee.github.io./gomobile">Experiences when use Gomobile to build framework. Which can share code for iOS and Android app.</a>
+</h4>
 
 <script>
-function openNav() {
+  function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
     document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
-}
+  }
 
-function closeNav() {
+  function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("main").style.marginLeft= "0";
+    document.getElementById("main").style.marginLeft = "0";
     document.body.style.backgroundColor = "white";
-}
+  }
 </script>
-     
+
 </body>
-</html> 
+
+</html>
