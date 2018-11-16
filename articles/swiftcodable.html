@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Swift codable</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        margin-top: 5px;
+        margin-left: 50px;
+        margin-right: 50px;
+        font-size: 18px;
+      }
+
+      item {
+        margin-left: 80px;
+        margin-right: 80px;
+      }
+
+      code {
+        font-size: 15px;
+        color: #33a9ff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <article>
+      <div>
+        <h3>Rough edges of Swift codable</h3>
+        <p class="title">
+          Swift codable help you to auto-generated Json to your object models
+          more easily, faster.<br />
+          Let's suppose we have a login api which will response the user info as
+          the json:
+          <pre>
+          <code>
+            { 
+              "userid":1002, 
+              "user_name":"nhatle", 
+              "email":"lenhathk@gmail.com",
+              "access_token":"akjfkadT10cm543sfdsf"
+            }
+          </code>
+          </pre>
+          How to parse the json to your user model?. It's really easy, first of all you
+          need define your user model like that:
+        <pre>
+          <code>
+        struct UserModel: Codable {
+            let id: Int
+            let name: String
+            let email: String
+            let token: String
+            enum CodingKeys: String, CodingKey {
+               case id = "userid"
+              case name = "user_name"
+               case email
+               case token = "access_token"
+              }
+         }
+          </code>
+        </pre>
+          As you see the field <code>email</code> in CodingKeys enum didn't have string to represent for it, just because the field name have same string with the
+          key in json string. Now, you parse the json string to your model like that:<br/>
+          <pre>
+            <code>
+             do {
+              let jsonData = json.data(using: .utf8)!
+              let user = try JSONDecoder().decode(UserModel.self, from: jsonData)
+             }catch let error {
+                 print(error.localizedDescription)
+             }
+            </code>
+          </pre> 
+          How about nested json? like that:
+          <pre>
+          <code>
+            {
+               "userid":1002,
+               "user_name":"nhatle",
+               "email":"lenhathk@gmail.com",
+               "access_token":"akjfkadT10cm543sfdsf",
+               "addresses":[
+                 {
+                   "street":"Linh Dong",
+                    "city":"HO CHI MINH"
+                },
+                 {
+                    "street":"Thanh Thai",
+                    "city":"HO CHI MINH"
+                 }
+                ]
+            }
+          </code>
+          </pre>
+          Don't worry, you just need to change a little bit your user model and add <code>Address</code> model to make your code run properly:
+          <pre>
+            <code>
+              struct UserModel: Codable {
+                 let id: Int
+                  let name: String
+                 let email: String
+                 let token: String
+                 let addresses: [Address]
+                 enum CodingKeys: String, CodingKey {
+                     case id = "userid"
+                     case name = "user_name"
+                    case email
+                     case token = "access_token"
+                     case addresses
+                   }
+                }
+
+                struct Address: Codable {
+                    let street: String
+                   let city: String
+                }
+             </code>
+          </pre>
+          You done, with out need change any code in the place you parsed the json to your model as above.<br/>
+          All things seem run smoothly until the day server team decided that into the response json of the login api <code>addresses</code>'s field is optional.
+          It's mean some users will have addresses field and another will miss it. And the the code you did before not run for some users which don't have addresses.<br/>
+          You can change the codable model to fixed it by adding <code>required init(from decoder: Decoder) throws</code> to your user model:
+          <pre>
+            <code>
+              required init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+               self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? "Your default value"
+               ...
+               self.addresses = try container.decodeIfPresent(Array&#60Address&#62.self, forKey: .addresses) ?? []
+              }
+              </code>
+          </pre>
+           Done! But it's still ridiculous that auto-generated methods cannot read the default values from non-optionals.<br/>
+        </p>
+      </div>
+    </article>
+  </body>
+</html>
