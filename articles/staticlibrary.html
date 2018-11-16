@@ -51,10 +51,10 @@
            Another note maybe your known it before :) The code for get bundle into your lib is:
            <pre>
            <code>
-        lazy var assetBundle: Bundle? = {
-          guard let path = bundle.path(forResource: "CommondResources", ofType: "bundle") else { return nil }
-          return Bundle(path: path)
-        }()
+lazy var assetBundle: Bundle? = {
+    guard let path = bundle.path(forResource: "CommondResources", ofType: "bundle") else { return nil }
+     return Bundle(path: path)
+}()
            </code>
            </pre>
            And then....You Done!<br/>
