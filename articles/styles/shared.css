@@ -14,3 +14,8 @@ code {
   font-size: 15px;
   color: #33a9ff;
 }
+
+br {
+  margin: 2.5em 0; /* FF for instance */
+  line-height: 2em; /* chrome for instance */
+}

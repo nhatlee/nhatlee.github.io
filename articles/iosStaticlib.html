@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>iOS static library</title>
+    <link rel="stylesheet" href="styles/shared.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      img {
+        margin-right: 40px;
+        margin-left: 40px;
+        height: 320px;
+        width: 600px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <article>
+      <div>
+        <h3>The main steps for build a static library</h3>
+        <p class="title">
+          Have many articles write about this. So I just noted some steps which
+          important to build successful a static framework<br />
+          For how to create new frame work, from your project select new project then choose Cocoa Touch Framework<br /> 
+          A picture is worth a thousand words :)<br />
+          <img src="resources/newFramework.png" alt="framework" /><br />
+          Give a name for your framework(I set Common for my framework's name). Then into <code>Build Setting</code> of your framework to change your frame work from
+          dynamic to Static Library :<br />
+          <img src="resources/setting.png" alt="setting" /> <br />
+          It seem very simple to have a static library, another steps to use your framework above you can search many place on the internet.<br/> 
+          But how about if you have some <code>.xib</code> or <code>.storyboard</code> files in your
+          libary? The app will crash when you use this libary. How to fix it?<br/>
+          Ok! You will need to create a bundle to put all xib and storyboard files in
+          it. How to create bundle? Just see the image :)<br />
+          First:<br />
+          <img src="resources/addBundle.png" alt="addBundle" /> <br />
+          Then:<br />
+           <img src="resources/macosBundle.png" alt="macosBundle" /> <br />
+           After that press next button you will need to put the name for your bundle. Then you change the <code>Base SDK</code> and <code>Supported Platforms</code> into bundle setting to <code>iOS</code><br/>
+           <img src="resources/bundleSetting.png" alt="bundleSetting" /> <br />
+           Then stay at your bundle, select <code></code>Build Phrases</code> -> <code>Coppy Bundle Resources</code> press the + button to add your resources(assert image, .xib files, storyboard files) to the bundle.
+           <i>After that just make sure you uncheck the box <code>Inherit Module From Target</code>. If you starting build your lib from the beginning like this example then the box will uncheck by default. But if you used your existing resources to build the static lib just <b>be careful</b> with this. It'll will make your app crash without any clear reason in the debug console of Xcode.<br/></i>
+          You also need disable <code>ENABLE_BITCODE</code> into your bundle setting.<br/>
+          Then remember to build your lib and bundle to make it available for use:<br/>
+          Build your library:<br/>
+          <img src="resources/buildLib.png" alt="buildLib" /> <br />
+          Build your bundle:<br/>
+          <img src="resources/buildBundle.png" alt="buildBundle" /> <br />
+           The final step is add your bundle and lib to your main project. Just make sure your lib and bundle have into <code>Target Dependencies</code> and <code>Copy Bundle Resources</code>. The final resource will look like that:<br/>
+           <img src="resources/finalResult.png" alt="finalResult" /> <br />
+           Another note maybe your known it before :) The code for get bundle into your lib is:
+           <pre>
+           <code>
+        lazy var assetBundle: Bundle? = {
+          guard let path = bundle.path(forResource: "CommondResources", ofType: "bundle") else { return nil }
+          return Bundle(path: path)
+        }()
+           </code>
+           </pre>
+           And then....You Done!<br/>
+           Hapy coding :)
+        </p>
+      </div>
+    </article>
+  </body>
+</html>
