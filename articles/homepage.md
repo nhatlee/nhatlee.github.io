@@ -1,4 +1,4 @@
-![Alternate text](buildLib.png)
+![MyImage](resources/avatar.png)
 
 # Head
 
