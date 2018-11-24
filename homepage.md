@@ -1,3 +1,4 @@
+<title>Try to load MD file</title>
 ![MyImage](resources/avatar.png)
 
 # Head
