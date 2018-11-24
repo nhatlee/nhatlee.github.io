@@ -17,7 +17,7 @@ And I will need a protocol to define my request apis method.EX:
 
 ```swift
 protocol NetworkAPIProtocol {
-    func checkOTP(from otp: String?) -> Observable&#60NetworkResponse&#62
+    func checkOTP(from otp: String?) -> Observable<NetworkResponse>
 }
 ```
 
