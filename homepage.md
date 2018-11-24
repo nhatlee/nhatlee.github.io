@@ -1,9 +1,17 @@
+@import "{{ site.theme }}";
+
+header {
+  display: none;
+}
+
 Document Title
 ==============
 
 ***This is a subtitle***
 
 **Author:** *Me*
+
+[create an anchor](#anchors-in-markdown)
 
 # Head
 
