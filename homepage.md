@@ -5,17 +5,11 @@ Document Title
 
 **Author:** *Me*
 
-![MyImage](resources/avatar.png)
-
 # Head
 
 ## Item
 
 ### Detail (optional)
-
-## Foot
-
-### Notes (optional)
 
 `some text`
 
