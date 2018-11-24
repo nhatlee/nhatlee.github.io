@@ -30,8 +30,7 @@
           </code>
           The method <code>checkOTP</code> passing otp parameter and return an Observable(in rxSwift) for response result.<br />
           Next step I need two struct one struct for implement real api call, and onether one handler return mockup json. Like bellow:<br />
-          <?prettify?>
-          <pre class="prettyprint"></pre>
+          <code>
             struct NetworkMockupAPI: NetworkAPIProtocol {<br />
               //JSON is a typealias: JSON = [String: Any]<br />
               private let responseStatus: [JSON]<br />
@@ -44,7 +43,7 @@
               // return the Observable of mockup testing which fetch from network_mockup.json's file here<br />
                 }<br />
             }<br />
-          </pre>
+          </code>
           And below is the struct for real api:<br />
           <code>
             struct NetworkRealAPI: NetworkAPIProtocol {<br />
@@ -70,6 +69,5 @@
         </p>
       </div>
     </article>
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   </body>
 </html>
