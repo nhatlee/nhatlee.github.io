@@ -7,9 +7,9 @@ header {
 Document Title
 ==============
 
-***This is a subtitle***
+***24/Nov/2018***
 
-**Author:** *Me*
+**Post by:** *Nhat Le*
 
 [create an anchor](#anchors-in-markdown)
 
