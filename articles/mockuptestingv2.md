@@ -1,11 +1,7 @@
-<header>
-Mockup Testing
-============
-</header>
-***24/Nov/2018***  
-**Post by:** *Nhat Le*
-
 # Setup mocking testing for iOS project
+
+**_24/Nov/2018_**  
+**Post by:** _Nhat Le_
 
 ### This post come from my experiences when develop new features for iOS app which need call request APIs but the server team still not develop those API yet, all things I have is just about the definitions of those API: host name, api paths, parameters, responses example.<br/>
 
