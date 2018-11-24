@@ -1,9 +1,10 @@
 <!-- Document
 ============== -->
 <title>Document</title>
-***24/Nov/2018***
-
+<div style="text-align: right"> 
+***24/Nov/2018*** 
 **Post by:** *Nhat Le*
+</div>
 
 [create an anchor](#anchors-in-markdown)
 
