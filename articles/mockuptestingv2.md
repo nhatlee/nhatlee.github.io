@@ -1,9 +1,11 @@
-<title>Document</title>
-<div style="text-align: right"> 
-***24/Nov/2018***
+<header>
+Mockup Testing
+============
+</header>
+***24/Nov/2018***  
 **Post by:** *Nhat Le*
-</div>
-# Add mockup testing in iOS project
+
+# Setup mocking testing for iOS project
 
 ### This post come from my experiences when develop new features for iOS app which need call request APIs but the server team still not develop those API yet, all things I have is just about the definitions of those API: host name, api paths, parameters, responses example.<br/>
 
