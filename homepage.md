@@ -1,4 +1,10 @@
-<title>Try to load MD file</title>
+Document Title
+==============
+
+***This is a subtitle***
+
+**Author:** *Me*
+
 ![MyImage](resources/avatar.png)
 
 # Head
