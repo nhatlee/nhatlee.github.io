@@ -1,10 +1,19 @@
-@import "{{ site.theme }}";
+<header>
+Things to Do
+============
+</header>
+<main>
+At Home
+=======
+*    Mow the cat
+*    Feed the lawn
 
-header {
-  display: none;
-}
-
-Document Title
+At the Office
+=============
+*    Learn Markdown
+*    Use Big-O notation in a clever way
+</main>
+<!-- Document Title
 ==============
 
 ***24/Nov/2018***
@@ -46,7 +55,7 @@ echo Hello world
 
 Some text
 
-```
+```swift
 protocol ZPConnectorAPIProtocol {
     var delegate: ZPConnectorAPIOutputProtocol? {get set}
     func set(userInfo: ZPConnectorUserInfo)
@@ -103,4 +112,4 @@ func getCacheDataForAccountInfoInput() -> (String, String)? {
         return (headNumber, lastNumber)
     }
 ```
-
+ -->
