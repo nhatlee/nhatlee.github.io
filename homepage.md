@@ -1,19 +1,4 @@
-<header>
-Things to Do
-============
-</header>
-<main>
-At Home
-=======
-*    Mow the cat
-*    Feed the lawn
-
-At the Office
-=============
-*    Learn Markdown
-*    Use Big-O notation in a clever way
-</main>
-<!-- Document Title
+% Document Title
 ==============
 
 ***24/Nov/2018***
@@ -112,4 +97,4 @@ func getCacheDataForAccountInfoInput() -> (String, String)? {
         return (headNumber, lastNumber)
     }
 ```
- -->
+
