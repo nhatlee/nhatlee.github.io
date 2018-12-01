@@ -13,7 +13,7 @@ I decided to have a `struct` for setting the environments, like this:
 }
 ```
 
-And I will need a protocol to define my request apis method.EX:
+And I will need a protocol to define my request apis method.
 
 ```swift
 protocol NetworkAPIProtocol {
