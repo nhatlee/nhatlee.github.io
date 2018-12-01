@@ -3,7 +3,7 @@
 **_11_Nov_2018_**  
 **Post by:** _Nhat Le_
 
-Swift codable help auto-generated json to your object models more easily, faster.  
+Swift codable help auto-generated json to your object models more easily.  
 To see how it work, just suppose we have a login api which will response the user info as the json:
 
 ```json
