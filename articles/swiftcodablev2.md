@@ -3,15 +3,15 @@
 **_11_Nov_2018_**  
 **Post by:** _Nhat Le_
 
-Swift codable help you to auto-generated Json to your object models more easily, faster.
-Let's suppose we have a login api which will response the user info as the json:
+Swift codable help auto-generated json to your object models more easily, faster.  
+To see how it work, just suppose we have a login api which will response the user info as the json:
 
 ```json
 {
-  "userid":1002,
-  "user_name":"nhatle",
-  "email":"lenhathk@gmail.com",
-  "access_token":"akjfkadT10cm543sfdsf"
+  "userid": 1002,
+  "user_name": "nhatle",
+  "email": "lenhathk@gmail.com",
+  "access_token": "akjfkadT10cm543sfdsf"
 }
 ```
 
@@ -48,18 +48,18 @@ How about nested json? like that:
 
 ```json
 {
-  "userid":1002,
-  "user_name":"nhatle",
-  "email":"lenhathk@gmail.com",
-  "access_token":"akjfkadT10cm543sfdsf",
-  "addresses":[
+  "userid": 1002,
+  "user_name": "nhatle",
+  "email": "lenhathk@gmail.com",
+  "access_token": "akjfkadT10cm543sfdsf",
+  "addresses": [
     {
-      "street":"Linh Dong",
-      "city":"HO CHI MINH"
+      "street": "Linh Dong",
+      "city": "HO CHI MINH"
     },
     {
-      "street":"Thanh Thai",
-      "city":"HO CHI MINH"
+      "street": "Thanh Thai",
+      "city": "HO CHI MINH"
     }
   ]
 }
