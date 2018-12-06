@@ -48,6 +48,8 @@
           <img src="aticlesresources/buildBundle.png" alt="buildBundle" /> <br />
            The final step is add your bundle and lib to your main project. Just make sure your lib and bundle have into <code>Target Dependencies</code> and <code>Copy Bundle Resources</code>. The final resource will look like that:<br/>
            <img src="aticlesresources/finalResult.png" alt="finalResult" /> <br />
+           Just have an important noted when you add file <code>.bundle</code> to <code>Copy Bundle Resources</code> is that you need selected the bundle file and selected your target in main project and drag bulde file to Copy Bunle Resources. It's important becasue if you selected your bundle file and choose <code>Show in Finder</code> then drag this file to Copy Bundle Resource it will make a copy not reference. So that, if you have any change in resource files later, it will not automatic change in the bundle in main project. Below is a picture take from my real project:
+           <img src="aticlesresources/AddBundleToMainProject.png" alt="finalResult" /> <br />
            Another note maybe your known it before :) The code for get bundle into your lib is:
            <pre>
            <code>
