@@ -125,6 +125,6 @@ Yes, we cannot make a directly call `asynchronous` function inside the `synchron
 ## Future
 Let's way for the first Xcode beta version will include async/await feature to see what will get improve?(mabe at WWDC time - 07/June)
 
- ### Let's hope for better version when async/await get release 👨‍💻
+ Let's hope for better version when async/await get release 👨‍💻
  
- ## Happy coding 🎉
+ Happy coding! 🎉
