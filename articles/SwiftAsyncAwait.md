@@ -22,7 +22,9 @@ protocol NetworkService {
   func request(with url: URL, params: [String: Any]) async throws -> Data
 }
 ```
+
 #### The completion callback is really familiar with all of the iOS developer. So let me explain for the async function:
+
 + `request(with url: URL, params: [String: Any])` the function accepted two parameters `url: URL` and `params: [String: Any]` 
  + The `async` keyword mean this function will run asynchronous.
  + The `throws` mean this function can throw an error(ex: network connection, bad request,...) and we will need handle error.
@@ -39,7 +41,7 @@ Same as the synchronous
  The only difference is that:
  >synchronous functions get to take full advantage of (part of) their thread and its stack, whereas asynchronous functions are able to completely give up that stack and use their own, separate storage
 
- ### Now let do the implementation for those above methods:
+ #### Now let do the implementation for those above methods:
 
  ```swift
  func request(with url: URL, params: [String: Any], completion: @escaping (Result<Data, Error>) -> Void) {
@@ -73,9 +75,8 @@ Same as the synchronous
   }
  ```
 
- #### As my comments for the async function, currently it's still verbose when compared with the completion callback function. But hope we will have a better function `dataTask(with:...` which support async.
-
- #### We done the implementation for service class. So let's make a request to get data. For simple I load the request inside a view controller:
+ #### As my comments for the async function, currently it's still verbose when compared with the completion callback function. But hope we will have a better function `dataTask(with:...` which support async. 
+ We done the implementation for service class. So let's make a request to get data. For simple I load the request inside a view controller:
 
  ```swift
  func doAsyncMethod() async {
