@@ -14,7 +14,7 @@
 
 ## After those setup, let create new iOS project for testing async await
 
-### In iOS project let create a Service class which will do the network call. Suppose we have a protocol `protocol NetworkService` which have two functions: a compltion callback function and a async funtion
+#### In iOS project let create a Service class which will do the network call. Suppose we have a protocol `protocol NetworkService` which have two functions: a compltion callback function and a async funtion
 
 ```swift
 protocol NetworkService {
@@ -22,7 +22,7 @@ protocol NetworkService {
   func request(with url: URL, params: [String: Any]) async throws -> Data
 }
 ```
-### The completion callback is really familiar with all of the iOS developer. So let me explain for the async function:
+#### The completion callback is really familiar with all of the iOS developer. So let me explain for the async function:
 + `request(with url: URL, params: [String: Any])` the function accepted two parameters `url: URL` and `params: [String: Any]` 
  + The `async` keyword mean this function will run asynchronous.
  + The `throws` mean this function can throw an error(ex: network connection, bad request,...) and we will need handle error.
@@ -73,9 +73,9 @@ Same as the synchronous
   }
  ```
 
- ### As my comments for the async function, currently it's still verbose when compared with the completion callback function. But hope we will have a better function `dataTask(with:...` which support async.
+ #### As my comments for the async function, currently it's still verbose when compared with the completion callback function. But hope we will have a better function `dataTask(with:...` which support async.
 
- ### We done the implementation for service class. So let's make a request to get data. For simple I load the request inside a view controller:
+ #### We done the implementation for service class. So let's make a request to get data. For simple I load the request inside a view controller:
 
  ```swift
  func doAsyncMethod() async {
@@ -119,10 +119,11 @@ Same as the synchronous
   }
  ```
 
- ### Yes, we cannot make a directly call `asynchronous` function inside the `synchronous` function, so we need `detach {...}` .
+ #### Yes, we cannot make a directly call `asynchronous` function inside the `synchronous` function, so we need `detach {...}` .
 
- ### As we can see, to make a asynchronous call currently it's still verbose.
+ #### As we can see, to make a asynchronous call currently it's still verbose.
 #### Will better if we can remove the `if #available(iOS`.
- ## Let's hope for better version when async/await get release 👨‍💻
+
+ ### Let's hope for better version when async/await get release 👨‍💻
  
- Happy coding 🎉
+ ## Happy coding 🎉
