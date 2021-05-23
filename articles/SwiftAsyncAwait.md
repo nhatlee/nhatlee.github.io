@@ -120,10 +120,10 @@ Same as the synchronous
   }
  ```
 
- Yes, we cannot make a directly call `asynchronous` function inside the `synchronous` function, so we need `detach {...}` .
+Yes, we cannot make a directly call `asynchronous` function inside the `synchronous` function, so we need `detach {...}`. As we can see, to make a asynchronous call currently it's still verbose.
 
- As we can see, to make a asynchronous call currently it's still verbose.
-Will better if we can remove the `if #available(iOS`.
+## Future
+Let's way for the first Xcode beta version will include async/await feature to see what will get improve?(mabe at WWDC time - 07/June)
 
  ### Let's hope for better version when async/await get release 👨‍💻
  
