@@ -41,7 +41,7 @@ Same as the synchronous
  The only difference is that:
  >synchronous functions get to take full advantage of (part of) their thread and its stack, whereas asynchronous functions are able to completely give up that stack and use their own, separate storage
 
- #### Now let do the implementation for those above methods:
+ Now let do the implementation for those above methods:
 
  ```swift
  func request(with url: URL, params: [String: Any], completion: @escaping (Result<Data, Error>) -> Void) {
