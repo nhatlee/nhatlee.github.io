@@ -1,4 +1,4 @@
-** 23 May 2021 **  
+23 May 2021
 **Post by:** _Nhat Le_
 
 # First look at Async/Await in Swift

@@ -1,6 +1,6 @@
 # Rough edges of Swift codable
 
-** 11 Nov 2018 **  
+11 Nov 2018
 **Post by:** _Nhat Le_
 
 Swift codable help auto-generated json to your object models more easily.  
