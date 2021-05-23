@@ -14,7 +14,7 @@
 
 ## After those setup, let create new iOS project for testing async await
 
-#### In iOS project let create a Service class which will do the network call. Suppose we have a protocol `protocol NetworkService` which have two functions: a compltion callback function and a async funtion
+In iOS project let create a Service class which will do the network call. Suppose we have a protocol `protocol NetworkService` which have two functions: a compltion callback function and a async funtion
 
 ```swift
 protocol NetworkService {
