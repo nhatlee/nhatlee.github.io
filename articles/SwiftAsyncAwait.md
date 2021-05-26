@@ -2,19 +2,19 @@
 **Post by:** _Nhat Le_
 
 # First look at Async/Await in Swift
-#### Many developers from another langues like C#, JavaScript, TypeScript, ... maby already familiar with async/await. However, with the Swift language we just have this feature since the proposal [0296-async-await](https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md) get accepted. And at this time when I write this article, async/await still not have release yet, just available via snapshot.
+#### Many developers from another langues like C#, JavaScript, TypeScript, ... maybe already familiar with async/await. However, with the Swift language we just have this feature since the proposal [0296-async-await](https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md) get accepted. And at this time when I write this article, async/await still not have release yet, just available via snapshot. We will have this feature when Swift 5.5 get release.
 
-## Setup inviroment:
+## Setup environment:
 + Xcode 12.5
-+ Swift snapshot which download on [Swift.org](https://swift.org/download/#snapshots)
-+ Open Xcode: Xcode -> Preferences... -> Components -> toolchains -> Swift 5.5 development snapshoot -> Check and install now
-+ If you used many Xcode version, then maybe you will need removed Xcode's derived data
++ Download and install Swift snapshot from [Swift.org](https://swift.org/download/#snapshots).
++ The open Xcode: Xcode -> Preferences... -> Components -> toolchains -> Swift 5.5 development snapshoot -> Check and install now
++ If you used many Xcode versions, then maybe you will need to remove the Xcode's derived data
 
 ![Like that](~/../../resources/xcodeInstallToolchains.png)
 
-## After those setup, let create new iOS project for testing async await
+## After those steps, let's create a new iOS project for testing async/await feature
 
-In iOS project let create a Service class which will do the network call. Suppose we have a protocol `protocol NetworkService` which have two functions: a compltion callback function and a async funtion
+In iOS project let's create a `NetworkService` class which will do the network call. Suppose we have a protocol `protocol NetworkService` which have two functions: a compltion callback function and a async funtion
 
 ```swift
 protocol NetworkService {
