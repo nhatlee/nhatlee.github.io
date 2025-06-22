@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>mockup testing</title>
+    <link rel="stylesheet" href="styles/shared.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+<body>  
+# Deep dive into Swift concurrency
+![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://github.com/nhatlee/DiveIntoSwiftConcurrency/blob/main/AsyncAwaitBootCamp/Resources/Screenshot%202025-05-31%20at%2013.47.53.png)
+
+EVNs: 
+- Xcode Version 16.4 (16F6)
+- Macmini M1 OS 15.4.1 (24E263)
+
+> [!NOTE]
+> A task's (inside SwiftUI View `.task {}`) lifetime is tied to the view's lifetime. Refer: [WWDC21: Discover concurrency in SwiftUI](https://www.youtube.com/watch?v=MTGh9U2yHNM)
+
+## 1. NavigationView
+- When working with NavigationLink on iOS 15(For above should use NavigationStack), the code for navigation link should wrap into `NavigationView` AND a container(ex: Stack):
+  
+This code didn't work
+```
+var body: some View {
+  NavigationView {
+     Button { isShowAsyncPage.toggle() } label: { Text("Show async page") }
+                .buttonStyle(.bordered)
+     NavigationLink(destination: AsyncAwaitBootCampView(), isActive: $isShowAsyncPage) { EmptyView() }
+}
+```
+Should updated to(*wrap NavigationLink inside container(ex: VStack)*):
+```
+var body: some View {
+  NavigationView {
+    VStack {//=> wrap NavigationLink inside container(ex: VStack)
+     Button { isShowAsyncPage.toggle() } label: { Text("Show async page") }
+                .buttonStyle(.bordered)
+     NavigationLink(destination: AsyncAwaitBootCampView(), isActive: $isShowAsyncPage) { EmptyView() }
+  }
+}
+```
+
+## 2. `Task { [weak self] in` ~[weak self]~ here didn't have any meaning
+
+Even when the view is dimissed the task still perform fetching and deinit method will not call until the task is finished(print the string *print("Result for fetch >>> \(result) seconds")*) the the deinit method will trigger
+
+```
+deinit {
+        print("deinit triggered!!!")
+    }
+func performFetchV2() {
+        Task { [weak self] in
+//            guard let self else { return }
+            do {
+                print("Start fetching ...")
+                let result = try await self?.clock.measure {
+                    try await self?.fetchThumbnailsV2(ids: self?.imageIds ?? [])
+                }
+                print("Result for fetch >>> \(result) seconds")
+            } catch {
+                print("Error: \(error)")
+            }
+        }
+    }
+```
+## 3. Cancellation
+> [!CAUTION]
+> Because the view(?)(`AsyncAwaitBootCampViewModel`) will not release if the task not finish yet(the `deinit` function not trigger). 
+> So if we manual cancel task inside `deinit` will not work. We should manual call cancel inside `onDisappear`: `.onDisappear { vm.cancellTasks() }`
+
+```
+ deinit {
+        //tasks["task2"]?.cancel()//=> didn't work because deinit didn't call if task not finis yet
+    }
+
+    // Call this method inside onDisappear of the view
+    func cancellTasks() {
+        tasks["task2"]?.cancel()
+    }
+```
+
+## 4. The times measure in the use case of this repo
+### For normal async/await: ~17.063496375 seconds
+```
+func performFetch() {
+        Task {
+            do {
+                print("Start fetching ...")
+                let result = try await clock.measure {
+                    try await fetchThumbnails(ids: imageIds)
+                }
+                print("Result for fetch >>> \(result) seconds")
+                /*
+                 Result for fetch >>> 17.063496375 seconds seconds
+                 Result for fetch >>> 17.066791167 seconds seconds
+                 Result for fetch >>> 17.037929667 seconds seconds
+                 */
+            } catch {
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+    func fetchThumbnails(ids: [String]) async throws {//-> [String: (Image, String)] {
+        var result: [ThumbnailModel] = []
+        for id in ids {
+            let image = try await fetchFullImage(id: id)
+            let metaData = try await fecchMetaData(id: id)
+            result.append(ThumbnailModel(thumbnail: image, metadata: metaData))
+        }
+        imagesThumbs = result
+    }
+    
+    func fetchFullImage(id: String) async throws -> String {
+        try await Task.sleep(nanoseconds: oneSecondSleep)
+        return id
+    }
+    
+    func fecchMetaData(id: String) async throws -> String {
+        try await Task.sleep(nanoseconds: oneSecondSleep)
+        let randomString = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+        return randomString.randomElement() ?? "Empty"
+    }
+```
+### With async let: ~8.529140541 seconds
+```
+func performFetchV2() {
+        Task { //[weak self] in
+            do {
+                print("Start fetching ...")
+                let result = try await clock.measure {
+                    try await fetchThumbnailsV2(ids: imageIds)
+                }
+                print("Result for fetch >>> \(result) seconds")
+                /*
+                 Result for fetch >>> 8.529140541 seconds seconds
+                 Result for fetch >>> 8.533008334 seconds seconds
+                 Result for fetch >>> 8.527049416 seconds seconds
+                 */
+            } catch {
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+    func fetchThumbnailsV2(ids: [String]) async throws {
+        print("Start fetchThumbnailsV2 ...")
+        var result: [ThumbnailModel] = []
+        for id in ids {
+            async let image = fetchFullImage(id: id)
+            async let metaData = fecchMetaData(id: id)
+            let (im, data) = try await (image, metaData)
+            result.append(ThumbnailModel(thumbnail: im, metadata: data))
+        }
+        imagesThumbs = result
+    }
+```
+### With TaskGroup: 1.136505542 seconds
+```
+func performFetchV3() {
+        Task {
+            do {
+                let result = try await clock.measure {
+                    try await fetchThumbnailsV3(ids: imageIds)
+                }
+                print("Result for fetch >>> \(result) seconds")
+                /*
+                 Result for fetch >>> 1.136505542 seconds seconds
+                 Result for fetch >>> 1.142909625 seconds seconds
+                 Result for fetch >>> 1.13683075 seconds seconds
+                 */
+                
+            } catch {
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+    func fetchThumbnailsV3(ids: [String]) async throws {
+       try await withThrowingTaskGroup { group in
+            for id in ids {
+                group.addTask {
+                    async let image = self.fetchFullImage(id: id)
+                    async let metaData = self.fecchMetaData(id: id)
+                    return ThumbnailModel(
+                        thumbnail: try await image,
+                        metadata: try await metaData
+                    )
+                }
+            }
+            
+            for try await model in group {
+                imagesThumbs.append(model)
+            }
+        }
+    }
+```
+If we change code as below, result will be `2.166060333 seconds`
+```
+group.addTask {
+//                    async let image = self.fetchFullImage(id: id)
+//                    async let metaData = self.fecchMetaData(id: id)
+//                    return ThumbnailModel(
+//                        thumbnail: try await image,
+//                        metadata: try await metaData
+//                    )
+                    let image = try await self.fetchFullImage(id: id)
+                    let metaData = try await self.fecchMetaData(id: id)
+                    return ThumbnailModel(
+                        thumbnail: image,
+                        metadata: metaData
+                    )
+                }
+```
+
+## 5. Swift 6.1.2 vs 6.2
+```
+import SwiftUI
+extension Thread {
+    nonisolated static var isOnMain: Bool {
+        return Thread.isMainThread
+    }
+}
+
+struct ContentView: View {
+    @State var didTapButton = false
+    
+    var body: some View {
+        VStack {
+            Button("Run experiment") {
+                didTapButton = true
+            }
+            .disabled(didTapButton)
+        }
+        .padding()
+        .task(id: didTapButton) {
+            guard didTapButton else { return }
+
+            print("Task call first is on main here: \(Thread.isOnMain)") // true
+            let experiment = Experiment()
+            await experiment.testAsync()
+            
+            didTapButton = false
+        }
+    }
+}
+
+class Experiment {
+    func testAsync() async  {
+        print("is on main before: \(Thread.isOnMain)")
+        try? await Task.sleep(for: .seconds(5))
+        print("is on main after: \(Thread.isOnMain)")
+    }
+    
+    /*
+     1:
+     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+     Swift version 6.1.2 Xcode 16.4, macos 15.5
+     Result:
+     Task call first is on main here: true
+     is on main before: false
+     is on main after: false
+     
+     
+     2:
+     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+     Swift version 6.2 Xcode 26.0 beta, macos 15.5
+     with Default Actor Isolation setting: nonisolated
+     Result:
+     Task call first is on main here: true
+     is on main before: false
+     is on main after: false
+     
+     
+     3:
+     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+     Swift version 6.2 Xcode 26.0 beta, macos 15.5
+     with Default Actor Isolation setting: MainActor
+     Result:
+     Task call first is on main here: true
+     is on main before: true
+     is on main after: true
+     
+     
+     4:
+     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+     marked testAsync with nonisolated: nonisolated func testAsync() async
+     Swift version 6.2 Xcode 26.0 beta, macos 15.5
+     with Default Actor Isolation setting: MainActor
+     Result:
+     Task call first is on main here: true
+     is on main before: false
+     is on main after: false
+     */
+}
+
+```
+<img width="1482" alt="Screenshot 2025-06-21 at 14 41 31" src="https://github.com/user-attachments/assets/6eb12b4a-21a1-4b5b-8773-c7c831b4e42a" />
+
+</body>
+</html>
