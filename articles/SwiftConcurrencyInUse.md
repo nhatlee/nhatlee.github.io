@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>mockup testing</title>
-    <link rel="stylesheet" href="styles/shared.css" type="text/css">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-  </head>
-
-<body>  
-# Deep dive into Swift concurrency
+# Playground with Swift concurrency
 ![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://github.com/nhatlee/DiveIntoSwiftConcurrency/blob/main/AsyncAwaitBootCamp/Resources/Screenshot%202025-05-31%20at%2013.47.53.png)
 
 EVNs: 
@@ -17,31 +8,7 @@ EVNs:
 > [!NOTE]
 > A task's (inside SwiftUI View `.task {}`) lifetime is tied to the view's lifetime. Refer: [WWDC21: Discover concurrency in SwiftUI](https://www.youtube.com/watch?v=MTGh9U2yHNM)
 
-## 1. NavigationView
-- When working with NavigationLink on iOS 15(For above should use NavigationStack), the code for navigation link should wrap into `NavigationView` AND a container(ex: Stack):
-  
-This code didn't work
-```
-var body: some View {
-  NavigationView {
-     Button { isShowAsyncPage.toggle() } label: { Text("Show async page") }
-                .buttonStyle(.bordered)
-     NavigationLink(destination: AsyncAwaitBootCampView(), isActive: $isShowAsyncPage) { EmptyView() }
-}
-```
-Should updated to(*wrap NavigationLink inside container(ex: VStack)*):
-```
-var body: some View {
-  NavigationView {
-    VStack {//=> wrap NavigationLink inside container(ex: VStack)
-     Button { isShowAsyncPage.toggle() } label: { Text("Show async page") }
-                .buttonStyle(.bordered)
-     NavigationLink(destination: AsyncAwaitBootCampView(), isActive: $isShowAsyncPage) { EmptyView() }
-  }
-}
-```
-
-## 2. `Task { [weak self] in` ~[weak self]~ here didn't have any meaning
+## 1. `Task { [weak self] in` ~[weak self]~ here didn't have any meaning
 
 Even when the view is dimissed the task still perform fetching and deinit method will not call until the task is finished(print the string *print("Result for fetch >>> \(result) seconds")*) the the deinit method will trigger
 
@@ -64,7 +31,7 @@ func performFetchV2() {
         }
     }
 ```
-## 3. Cancellation
+## 2. Cancellation
 > [!CAUTION]
 > Because the view(?)(`AsyncAwaitBootCampViewModel`) will not release if the task not finish yet(the `deinit` function not trigger). 
 > So if we manual cancel task inside `deinit` will not work. We should manual call cancel inside `onDisappear`: `.onDisappear { vm.cancellTasks() }`
@@ -80,7 +47,7 @@ func performFetchV2() {
     }
 ```
 
-## 4. The times measure in the use case of this repo
+## 3. The times measure in the use case of this repo
 ### For normal async/await: ~17.063496375 seconds
 ```
 func performFetch() {
@@ -214,7 +181,7 @@ group.addTask {
                 }
 ```
 
-## 5. Swift 6.1.2 vs 6.2
+## 4. Swift 6.1.2 vs 6.2
 ```
 import SwiftUI
 extension Thread {
@@ -297,6 +264,3 @@ class Experiment {
 
 ```
 <img width="1482" alt="Screenshot 2025-06-21 at 14 41 31" src="https://github.com/user-attachments/assets/6eb12b4a-21a1-4b5b-8773-c7c831b4e42a" />
-
-</body>
-</html>
